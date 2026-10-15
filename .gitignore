@@ -1,0 +1,31 @@
+# Configuración de Qt Creator
+*.pro.user
+*.pro.user.*
+
+# Carpetas de compilación
+build/
+build-*/
+debug/
+release/
+
+# Archivos compilados
+*.exe
+*.o
+*.obj
+*.out
+*.app
+
+# Archivos temporales
+*.tmp
+*.log
+
+# Archivos de macOS
+.DS_Store
+
+# Archivos generados por CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+
+
+*.user
