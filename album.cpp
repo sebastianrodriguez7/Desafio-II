@@ -20,3 +20,4 @@ size_t Album::obtenerMemoriaConsumida() const {
                    fotos.memoriaDinamica();
     return total;
 }
+
