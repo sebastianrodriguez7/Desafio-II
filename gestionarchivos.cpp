@@ -61,6 +61,9 @@ bool GestionArchivos::cargarUsuarios(const char* ruta, ListaDinamica<Usuario>& u
 
     char linea[LINEA_MAX];
     char username[64], password[64], nombre[128], correo[128], rutaFoto[256], ciudad[64], pais[64];
+    MedidorRecursos::registrarMemoriaLocal(sizeof(linea) + sizeof(username) + sizeof(password) +
+                                           sizeof(nombre) + sizeof(correo) + sizeof(rutaFoto) +
+                                           sizeof(ciudad) + sizeof(pais));
     int idCount = 0;
     while (archivo.getline(linea, LINEA_MAX)) {
         MedidorRecursos::registrarIteracion();

@@ -15,6 +15,7 @@ void RedSocial::iniciarSistema() {
     GestionArchivos::cargarAlbumesYFotos("albumes_fotos.txt", usuarios);
     GestionArchivos::cargarSolicitudes("solicitudes.txt", usuarios);
     GestionArchivos::cargarMensajes("mensajes.txt", usuarios);
+    MedidorRecursos::reportarConsumo(calcularMemoriaTotalSistema());
 
     if (usuarios.getTamano() > 0) {
         while (true) {
@@ -32,6 +33,7 @@ void RedSocial::iniciarSistema() {
 bool RedSocial::autenticarUsuario() {
     char bufferUser[128];
     char bufferPwd[128];
+    MedidorRecursos::registrarMemoriaLocal(sizeof(bufferUser) + sizeof(bufferPwd));
 
     std::cout << "\n============================================\n";
     std::cout << "        INICIO DE SESION - Ude@Book         \n";
@@ -137,7 +139,7 @@ void RedSocial::obtenerTresFotosAmigosPonderadas(Cadena rutasOut[3]) {
 
 void RedSocial::menuPrincipal() {
     char opcionChar = ' ';
-    bool fotosActualizadas = false; // <-- Bandera para controlar la restricción de 1 sola vez
+    bool fotosActualizadas = false;
 
     do {
         MedidorRecursos::reiniciarIteraciones();
@@ -158,7 +160,6 @@ void RedSocial::menuPrincipal() {
         std::cout << " 4.- Administrar mensajes\n";
         std::cout << "------------------------------------------------------------\n";
 
-        // Mostrar la opción 'N' dinámicamente solo si aún no se ha usado
         if (!fotosActualizadas) {
             std::cout << " .- Ingrese 'N' o 'n' para alternar las fotos de perfil (Disponible 1 sola vez).\n";
         }
@@ -169,7 +170,7 @@ void RedSocial::menuPrincipal() {
 
         if (opcionChar == 'N' || opcionChar == 'n') {
             if (!fotosActualizadas) {
-                fotosActualizadas = true; // Bloquea futuras actualizaciones en esta sesión
+                fotosActualizadas = true;
                 std::cout << "\n> ¡Fotos de perfil actualizadas por única vez con éxito!\n";
                 continue;
             } else {
@@ -405,6 +406,7 @@ void RedSocial::administrarMensajes() {
         std::cout << "Ingrese el texto del mensaje (max 512 caracteres):\n";
         std::cin.ignore();
         char textoMsj[512];
+        MedidorRecursos::registrarMemoriaLocal(sizeof(textoMsj));
         std::cin.getline(textoMsj, 512);
 
         Mensaje nuevoMsj(usuarioAutenticado->getNombreUsuario(), amigo->getNombreUsuario(), Cadena(textoMsj), Fecha::ahora(), false);
