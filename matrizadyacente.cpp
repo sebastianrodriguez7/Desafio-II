@@ -46,10 +46,15 @@ void MatrizAdyacente::redimensionar(int nuevaCapacidad) {
 }
 
 void MatrizAdyacente::conectar(int idUsuario1, int idUsuario2) {
+    if (idUsuario1 < 0 || idUsuario2 < 0) {
+        return;
+    }
+
     int maxId = (idUsuario1 > idUsuario2) ? idUsuario1 : idUsuario2;
     if (maxId >= capacidad) {
         redimensionar(maxId + 50);
     }
+
     matriz[idUsuario1][idUsuario2] = true;
     matriz[idUsuario2][idUsuario1] = true;
 }
