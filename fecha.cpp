@@ -1,6 +1,7 @@
 #include "fecha.h"
 #include "medidorrecursos.h"
 #include <iostream>
+#include <ctime>
 
 static bool leerNumero(const char*& p, int& valor) {
     if (*p < '0' || *p > '9') return false;
@@ -118,7 +119,6 @@ void Fecha::aTexto(char* destino, int formato) const {
         escribir2(destino + 11, hora); destino[13] = ':';
         escribir2(destino + 14, minuto); destino[16] = '\0';
     } else if (formato == 1) {
-
         escribir4(destino, anio); destino[4] = '-';
         escribir2(destino + 5, mes); destino[7] = '-';
         escribir2(destino + 8, dia); destino[10] = '\0';
@@ -136,9 +136,20 @@ void Fecha::mostrar() const {
 }
 
 Fecha Fecha::ahora() {
-    return Fecha(15, 10, 2026, 12, 0);
+    MedidorRecursos::registrarUsoExterno(MedidorRecursos::RELOJ);
+
+    std::time_t t = std::time(nullptr);
+    std::tm* ahoraLocal = std::localtime(&t);
+
+    return Fecha(
+        ahoraLocal->tm_mday,
+        ahoraLocal->tm_mon + 1,
+        ahoraLocal->tm_year + 1900,
+        ahoraLocal->tm_hour,
+        ahoraLocal->tm_min
+        );
 }
 
 size_t Fecha::memoriaDinamica() const {
-    return 0; //
+    return 0;
 }
